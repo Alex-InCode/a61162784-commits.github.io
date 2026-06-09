@@ -678,17 +678,12 @@ body.light .hero-card{
        id="password"
        placeholder="Password" />
 
-    <button class="sign-btn" onclick="registerUser()">
-    Sign Up
-</button>
-
-<button class="sign-btn" onclick="loginUser()">
-    Sign In
-</button>
+    <button class="sign-btn" onclick="login()">Sign Up</button>
+<button class="sign-btn" onclick="login()">Sign In</button>
     <button class="close-btn" onclick="closeLogin()">Close</button>
   </div>
 </div>
-
+  </nav>
 <main id="top">
   <section class="hero">
     <div class="container hero-grid">
@@ -955,11 +950,8 @@ function login(){
 
 
 function profileAction() {
-
-    console.log("profileAction started");
-
     document.getElementById("loginPopup").style.display = "flex";
-}
+    }
 
 function logout(){
 
@@ -1151,91 +1143,6 @@ const auth = getAuth(app);
     const password =
         document.getElementById("password").value;
 
-    try{
 
-        await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-        );
-
-        alert("Login successful!");
-
-        closeLogin();
-
-    }catch(error){
-
-        alert(error.message);
-
-    }
-      }
-      window.logout = async function(){
-
-    try{
-
-        await signOut(auth);
-
-        document.getElementById(
-            "profileText"
-        ).innerText = "Login";
-
-        document.getElementById(
-            "menuUsername"
-        ).innerText = "Guest";
-
-        document.getElementById(
-            "menuEmail"
-        ).innerText = "Not logged in";
-
-        localStorage.removeItem("username");
-
-        document.getElementById(
-            "profileMenu"
-        ).style.display = "none";
-
-    }catch(error){
-
-        alert(error.message);
-
-    }
-      }
-      onAuthStateChanged(auth, (user) => {
-
-    if(user){
-
-        const username =
-            localStorage.getItem("username") ||
-            user.email.split("@")[0];
-
-        document.getElementById(
-            "profileText"
-        ).innerText =
-            username.substring(0,2).toUpperCase();
-
-        document.getElementById(
-            "menuUsername"
-        ).innerText = username;
-
-        document.getElementById(
-            "menuEmail"
-        ).innerText = user.email;
-
-    }else{
-
-        document.getElementById(
-            "profileText"
-        ).innerText = "Login";
-
-        document.getElementById(
-            "menuUsername"
-        ).innerText = "Guest";
-
-        document.getElementById(
-            "menuEmail"
-        ).innerText = "Not logged in";
-    }
-
-});
-    </script>
 </body>
     </html>
