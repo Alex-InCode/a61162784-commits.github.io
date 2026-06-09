@@ -680,11 +680,11 @@ body.light .hero-card{
        id="password"
        placeholder="Password" />
 
-    <button class="sign-btn" onclick="registerUser()">
+    <button class="sign-btn" onclick="login()">
     Sign Up
 </button>
 
-<button class="sign-btn" onclick="loginUser()">
+<button class="sign-btn" onclick="login()">
     Sign In
 </button>
     <button class="close-btn" onclick="closeLogin()">Close</button>
@@ -955,9 +955,28 @@ function login(){
 }
 
 
-function profileAction() {
-    alert("Profile button clicked!");
-}
+function profileAction(){
+
+    const user = auth.currentUser;
+
+    if(user){
+
+        const menu =
+            document.getElementById("profileMenu");
+
+        menu.style.display =
+            menu.style.display === "block"
+            ? "none"
+            : "block";
+
+    }else{
+
+        document.getElementById(
+            "loginPopup"
+        ).style.display = "flex";
+
+    }
+    }
 
 function logout(){
 
@@ -1105,6 +1124,138 @@ const auth = getAuth(app);
 function openLogin(){
     document.getElementById("loginPopup").style.display = "flex";
 }
+      window.registerUser = async function(){
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    if(!username || !email || !password){
+        alert("Fill all fields");
+        return;
+    }
+
+    try{
+
+        await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        localStorage.setItem(
+            "username",
+            username
+        );
+
+        alert("Account created!");
+
+        closeLogin();
+
+    }catch(error){
+
+        alert(error.message);
+
+    }
+      }
+      window.loginUser = async function(){
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    try{
+
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        alert("Login successful!");
+
+        closeLogin();
+
+    }catch(error){
+
+        alert(error.message);
+
+    }
+      }
+      window.logout = async function(){
+
+    try{
+
+        await signOut(auth);
+
+        document.getElementById(
+            "profileText"
+        ).innerText = "Login";
+
+        document.getElementById(
+            "menuUsername"
+        ).innerText = "Guest";
+
+        document.getElementById(
+            "menuEmail"
+        ).innerText = "Not logged in";
+
+        localStorage.removeItem("username");
+
+        document.getElementById(
+            "profileMenu"
+        ).style.display = "none";
+
+    }catch(error){
+
+        alert(error.message);
+
+    }
+      }
+      onAuthStateChanged(auth, (user) => {
+
+    if(user){
+
+        const username =
+            localStorage.getItem("username") ||
+            user.email.split("@")[0];
+
+        document.getElementById(
+            "profileText"
+        ).innerText =
+            username.substring(0,2).toUpperCase();
+
+        document.getElementById(
+            "menuUsername"
+        ).innerText = username;
+
+        document.getElementById(
+            "menuEmail"
+        ).innerText = user.email;
+
+    }else{
+
+        document.getElementById(
+            "profileText"
+        ).innerText = "Login";
+
+        document.getElementById(
+            "menuUsername"
+        ).innerText = "Guest";
+
+        document.getElementById(
+            "menuEmail"
+        ).innerText = "Not logged in";
+    }
+
+});
     </script>
 </body>
     </html>
