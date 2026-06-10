@@ -350,7 +350,7 @@ body.light .hero-card{
   flex-wrap:wrap;
 }
 
-.tag{8
+.tag{
   font-size:.8rem;
   padding:6px 10px;
   border-radius:999px;
@@ -571,60 +571,10 @@ body.light .hero-card{
     text-align:center;
   }
 }
-  /* PROFILE MENU */
-
-.profile-menu{
-    display:none;
-    position:fixed;
-    top:160px;
-    right:20px;
-    width:280px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:20px;
-    overflow:hidden;
-    z-index:1500;
-    box-shadow:var(--shadow);
-}
-
-.profile-header{
-    padding:18px;
-    background:rgba(56,189,248,.08);
-}
-
-.profile-header h3{
-    margin-bottom:5px;
-}
-
-.profile-header p{
-    color:var(--muted);
-    font-size:14px;
-    word-break:break-word;
-}
-
-.profile-menu button{
-    width:100%;
-    padding:15px;
-    border:none;
-    background:none;
-    color:var(--text);
-    text-align:left;
-    cursor:pointer;
-    font-size:15px;
-}
-
-.profile-menu button:hover{
-    background:rgba(56,189,248,.08);
-}
-
-.logout-btn-menu{
-    color:#ef4444 !important;
-  }
 </style>
 </head>
 
 <body>
-  
 <nav class="navbar">
   <div class="container navbar-inner">
     <a class="brand" href="#top">
@@ -643,56 +593,34 @@ body.light .hero-card{
     <div class="nav-actions">
       <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle theme">🌙</button>
     </div>
+  </div>
+</nav>
 
-<div class="profile-btn" onclick="profileAction()" title="Profile">
+<div class="profile-btn" onclick="openLogin()" title="Login">
+  <span id="profileText">Login</span>
 </div>
-  <!-- PROFILE MENU -->
 
-<div class="profile-menu" id="profileMenu">
-<div class="login-box">
+<div class="login-popup" id="loginPopup" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="login-box">
     <h2 id="loginTitle">Login</h2>
     <p class="muted" style="margin-bottom:10px;">Enter your username and email.</p>
 
     <input type="text" id="username" placeholder="Username" />
     <input type="email" id="email" placeholder="Email" />
-    <input type="password"
-       id="password"
-       placeholder="Password" />
 
-    <button class="sign-btn" onclick="login()">Sign Up</button>
-<button class="sign-btn" onclick="login()">Sign In</button>
+    <button class="sign-btn" onclick="login()">Sign In</button>
     <button class="close-btn" onclick="closeLogin()">Close</button>
   </div>
-    <div class="profile-header">
-        <h3 id="menuUsername">Guest</h3>
-        <p id="menuEmail">Not logged in</p>
-    </div>
-
-    <button onclick="myProfile()">
-        👤 My Profile
-    </button>
-
-    <button onclick="settings()">
-        ⚙️ Settings
-    </button>
-
-    <button onclick="logout()" class="logout-btn-menu">
-        🚪 Logout
-    </button>
-
 </div>
 
-  </div>
-  <script>
-  </nav>
 <main id="top">
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-card fade-in">
         <span class="kicker">Python Developer • GUI Builder • Tech Blogger</span>
-        <h1>Mudshark</h1>
+        <h1>Alex Mudshark</h1>
         <p>
-          Welcome! My name is Alex the owner of Mudshark Software Industry. I build Python projects, share my coding journey,
+          Welcome to Mudshark Software Industry. I build Python projects, share my coding journey,
           and document what I learn while growing into software development.
         </p>
 
@@ -883,16 +811,15 @@ body.light .hero-card{
           <p class="section-subtitle">A simple place for people to reach out.</p>
         </div>
       </div>
-<div class="login-popup" id="loginPopup" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
 
       <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
         <div class="card">
           <h3>Email</h3>
-          <p>a61162784@gmail.com</p>
+          <p>your@email.com</p>
         </div>
         <div class="card">
           <h3>GitHub</h3>
-          <p>a61162784-commits.github.io</p>
+          <p>github.com/yourusername</p>
         </div>
         <div class="card">
           <h3>Location</h3>
@@ -913,247 +840,61 @@ body.light .hero-card{
     </div>
   </div>
 </footer>
-    
-    function openLogin(){
-    document.getElementById("loginPopup").style.display = "flex";
-    }
+
+<script>
+function openLogin(){
+  document.getElementById("loginPopup").style.display = "flex";
+}
+
 function closeLogin(){
-    document.getElementById("loginPopup").style.display = "none";
+  document.getElementById("loginPopup").style.display = "none";
 }
-    
+
 function login(){
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
 
-    const username =
-        document.getElementById("username").value.trim();
+  if(username === "" || email === ""){
+    alert("Please fill all fields");
+    return;
+  }
 
-    const email =
-        document.getElementById("email").value.trim();
+  localStorage.setItem("username", username);
+  localStorage.setItem("email", email);
 
-    const password =
-        document.getElementById("password").value;
-
-    if(username === "" || email ==="" || password === ""){
-        alert("Please fill all fields");
-        return;
-    }
-
-    localStorage.setItem("username", username);
-    localStorage.setItem("email", email);
-    localStorage.setItem("password", password);
-
-    document.getElementById("profileText").innerText =
-        username.substring(0,2).toUpperCase();
-
-    document.getElementById("menuUsername").innerText =
-        username;
-
-    document.getElementById("menuEmail").innerText =
-        email;
-
-    document.getElementById("profileMenu").style.display =
-        "none";
-
-    closeLogin();
-
-    alert("Account created successfully!");
-}
-
-
-
-function profileAction() {
-    document.getElementById("loginPopup").style.display = "flex";
-    }
-
-function logout(){
-
-    localStorage.removeItem("username");
-    localStorage.removeItem("email");
-
-    document.getElementById("profileText").innerText =
-        "Login";
-
-    document.getElementById("menuUsername").innerText =
-        "Guest";
-
-    document.getElementById("menuEmail").innerText =
-        "Not logged in";
-
-    document.getElementById("profileMenu").style.display =
-        "none";
-
-    alert("Logged out successfully");
-}
-
-function myProfile(){
-
-    alert("Profile page coming soon.");
-
-}
-
-function settings(){
-
-    alert("Settings page coming soon.");
-
+  document.getElementById("profileText").innerText = username;
+  closeLogin();
 }
 
 function toggleTheme(){
-
-    document.body.classList.toggle("light");
-
-    const isLight =
-        document.body.classList.contains("light");
-
-    localStorage.setItem(
-        "theme",
-        isLight ? "light" : "dark"
-    );
-
-    document.getElementById("themeBtn").innerText =
-        isLight ? "☀️" : "🌙";
+  document.body.classList.toggle("light");
+  const isLight = document.body.classList.contains("light");
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+  document.getElementById("themeBtn").innerText = isLight ? "☀️" : "🌙";
 }
 
 function filterContent(){
+  const q = document.getElementById("searchInput").value.toLowerCase().trim();
+  const cards = document.querySelectorAll(".searchable");
 
-    const q =
-        document.getElementById("searchInput")
-        .value.toLowerCase().trim();
-
-    const cards =
-        document.querySelectorAll(".searchable");
-
-    cards.forEach(card => {
-
-        const text =
-            card.innerText.toLowerCase();
-
-        card.style.display =
-            text.includes(q) ? "" : "none";
-
-    });
+  cards.forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(q) ? "" : "none";
+  });
 }
 
 window.addEventListener("load", function(){
+  const savedUser = localStorage.getItem("username");
+  if(savedUser){
+    document.getElementById("profileText").innerText = savedUser;
+  }
 
-    const savedUser =
-        localStorage.getItem("username");
-
-    const savedEmail =
-        localStorage.getItem("email");
-
-    if(savedUser){
-
-        document.getElementById("profileText").innerText =
-            savedUser.substring(0,2).toUpperCase();
-
-        document.getElementById("menuUsername").innerText =
-            savedUser;
-
-        document.getElementById("menuEmail").innerText =
-            savedEmail;
-    }
-
-    const savedTheme =
-        localStorage.getItem("theme");
-
-    if(savedTheme === "light"){
-
-        document.body.classList.add("light");
-
-        document.getElementById("themeBtn").innerText =
-            "☀️";
-    }
+  const savedTheme = localStorage.getItem("theme");
+  if(savedTheme === "light"){
+    document.body.classList.add("light");
+    document.getElementById("themeBtn").innerText = "☀️";
+  }
 });
-
-document.addEventListener("click", function(event){
-
-    const menu =
-        document.getElementById("profileMenu");
-
-    const profileBtn =
-        document.querySelector(".profile-btn");
-
-    if(!menu || !profileBtn) return;
-
-    if(
-        !menu.contains(event.target) &&
-        !profileBtn.contains(event.target)
-    ){
-        menu.style.display = "none";
-    }
-
-});
-
-  </script>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBNj8nhNIeEORY6qa6s5iPupPqZdNOA4aQ",
-    authDomain: "mudshark-blog.firebaseapp.com",
-    projectId: "mudshark-blog",
-    storageBucket: "mudshark-blog.firebasestorage.app",
-    messagingSenderId: "143488495231",
-    appId: "1:143488495231:web:eb750e4e117a48514a994a",
-    measurementId: "G-NXHLWP3TC8"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-      window.registerUser = async function(){
-
-    const username =
-        document.getElementById("username").value.trim();
-
-    const email =
-        document.getElementById("email").value.trim();
-
-    const password =
-        document.getElementById("password").value;
-
-    if(!username || !email || !password){
-        alert("Fill all fields");
-        return;
-    }
-
-    try{
-
-        await createUserWithEmailAndPassword(
-            auth,
-            email,
-            password
-        );
-
-        localStorage.setItem(
-            "username",
-            username
-        );
-
-        alert("Account created!");
-
-        closeLogin();
-
-    }catch(error){
-
-        alert(error.message);
-
-    }
-      }
-      window.loginUser = async function(){
-
-    const email =
-        document.getElementById("email").value.trim();
-
-    const password =
-        document.getElementById("password").value;
-
-
+</script>
 </body>
-    </html>
+</html>
